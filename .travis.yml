@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t michka/react-test -f ./client/Dockerfile.dev ./client/Dockerfile.dev
+
+script:
+  - docker run michka/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t michka/multi-client ./client
+  - docker build -t michka/multi-server ./server
+  - docker build -t michka/multi-worker ./worker
+  - docker build -t michka/multi-nginx ./nginx
+  # Login to dockerhub
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Push images
+  - docker push michka/multi-client
+  - docker push michka/multi-server
+  - docker push michka/multi-worker
+  - docker push michka/multi-nginx
