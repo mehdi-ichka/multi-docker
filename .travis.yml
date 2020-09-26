@@ -3,20 +3,20 @@ services:
   - docker
 
 before_install:
-  - docker build -t michka/react-test -f ./client/Dockerfile.dev ./client
+  - docker build -t mehdiichka/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run michka/react-test npm test -- --coverage
+  - docker run mehdiichka/react-test npm test -- --coverage
 
 after_success:
-  - docker build -t michka/multi-client ./client
-  - docker build -t michka/multi-server ./server
-  - docker build -t michka/multi-worker ./worker
-  - docker build -t michka/multi-nginx ./nginx
+  - docker build -t mehdiichka/multi-client ./client
+  - docker build -t mehdiichka/multi-server ./server
+  - docker build -t mehdiichka/multi-worker ./worker
+  - docker build -t mehdiichka/multi-nginx ./nginx
   # Login to dockerhub
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Push images
-  - docker push michka/multi-client
-  - docker push michka/multi-server
-  - docker push michka/multi-worker
-  - docker push michka/multi-nginx
+  - docker push mehdiichka/multi-client
+  - docker push mehdiichka/multi-server
+  - docker push mehdiichka/multi-worker
+  - docker push mehdiichka/multi-nginx
